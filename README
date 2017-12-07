@@ -1,0 +1,100 @@
+#####################
+##### GROUP 1 #######
+###### HW 4 #########
+#####################
+
+Authors:
+	Julian Marohnic
+	Harrison Agrusa
+	Ramsey Karim
+
+First, move to the src/ directory and make the C binary with
+       our Makefile. After that, move back to the primary directory.
+
+    ~$ cd src/
+    ~$ make
+    ~$ cd ../
+
+Then run our N-body code using the Python script runProb1.py
+
+    ~$ python runProb1.py
+
+This will run the binary for the 4 cases (2 eccentricities, 2 integrators)
+     described in the writeup and will also produce appropriate plots.
+
+The animation of the system described in problem 2 in the writeup is saved in
+	the official/ directory as sphere.mp4.
+
+
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+That's it! Unless..
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+If you would really like to use our code with your own inputs, keep reading.
+
+Make nbodymain with the "make" command from within the src/ directory.
+You must make your own output directory. This is important.
+You must ensure your input file is in proper format. It should be a text
+	file with no comments in a form such that each line is a unique particle.
+	Each line should follow the format:
+		m x y z Vx Vy Vz
+	No exceptions. The code is smart, but cannot read your mind.
+
+Call nbodymain with the following 8 or 9 arguments:
+    <input_file>: string
+        Path to the input file. Inputs are expected as text files including only numbers. Each row indicates a
+        unique particle. The first column is mass. The next three columns are x, y, z position, followed by
+        the x, y, and z components of velocity, for a total of 7 columns.
+        This program can support other spatial dimensions, but needs small tweaks in input/output. This should
+        not be attempted without express consent of the authors.
+
+    <step_size>: float/double
+        Integration time step.
+
+    <n_steps>: integer
+        Number of integration steps.
+
+    <softening>: float/double
+        Gravitational force softening parameter. Set to 0 for no softening.
+
+    <output_frequency>: integer
+        Frequency at which output files are written. Reduce frequency for slightly better runtime,
+        especially for Python-based analysis or graphing.
+        This number is read in as:
+            "We will save an output file every <output_frequency>
+                steps."
+        If you want every step saved, use 1. If you want every fourth step, use 4.
+        Do not input 0 or negative numbers. The program will ask you to try again.
+
+    <integrator_name>: string
+        Integrator to use. The string must be EXACTLY "RK4" or "LF2".
+        No other inputs are acceptable, and the program will ask you to try again.
+
+    <critical_angle>: double
+        Critical angle to use for the tree approximation. Set to a larger number for more approximation and
+        potentially quicker integration, at the risk of accuracy loss.
+        Set to 0 if you would like the program to act as a particle-particle simulation.
+
+    <output_directory>: string
+        Directory to which to output text files. Output is in the same format as input.
+        This directory MUST exist prior to calling this program.
+
+    <index (optional)>: integer
+        You do not need this argument. You may input an integer to be used as the starting
+        step number. Do not input a negative number. If present and nonzero, the program will integrate for
+        <n_steps> - <index> steps and label the output files accordingly.
+        This is useful for starting your program where it left off from a past output file. Simply use the step number
+        of the previous output as this argument, and the rest will be handled.
+
+Example: (from official/ directory)
+	~$ cd src/
+	~$ make
+	~$ mkdir my_output_directory/
+	~$ mv ~/myinputfilepath/my_input_file.txt ./
+	~$ ./nbodymain my_input_file.txt 0.001 1000 0 5 LF2 0.1 my_output_directory/
+
+The input file for the initial conditions used in problem 1 is saved in the src/ directory as sphere_initial.txt, in the format described above.
+
+If you got to outputfile_0050.txt and had to cancel, start it up again with
+	~$ ./nbodymain my_output_directory/outputfile_0050.txt 0.001 1000 0 5 LF2 0.1 my_output_directory/ 50
