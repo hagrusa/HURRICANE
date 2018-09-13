@@ -1,0 +1,80 @@
+Code Ideas & To Do list:
+
+1. 
+add flags for command line args instead of having to list them all
+
+2.
+Parallelize with OpenMP or MPI?
+		- according to Derek, BH tree is not very parallizable because there are lost of empty cells 
+		- if we want to parallelize, do we write a different tree? (kd tree)
+
+3.
+Adaptive step size?
+	- could do this by finding the smallest particle separation distance over the fastest speed in the system, this sets min time step. this is expensive and probably sketchy
+	- make it some fraction of the dynamical time?
+	- See NR RK4 with adaptive step sizes
+	-lots of literature on adaptive step sizes for sympleptic integrators
+4.
+Data structure of input/outputs?
+	-we may want outputs to have more info than just particle positions - (timestamps for adaptive step sizes.)
+	-but want it to be general to not have to include extra info(input file doesnt need time stamp if it is assumed to be zero)
+
+5.
+way to rewrite particle arrays so memory collisions happen less often. particles that are physically close should be written close in memory? then rewrite the order of the particles every so often (based on dyamical time??) for optimal efficiency.
+	-numerical recipes has fast sorting methods we can use (quicksort probably) for high performance
+
+6. other/higher order integrators?
+	-NR has other ode integrators we could add (they have one with accuracy monitoring, that could be cool)
+	-NR has an RK4 with adaptive step size - we should def do this
+
+
+7. More memory allocation thoughts:
+		-need to make sure we are allocating memory well (see NR routine for creating vectors.)
+
+
+8. multipole expansion of gravity for distant cells instead of treating them as point masses. 
+
+9. would be fun to look at particle-mesh method & FFT (@ramsey you know you would like that). this could be separate to the tree
+	- a natural extension of particle mesh would be adding hydro
+
+
+
+10. add more physics?
+	-could give each particle a temperature, then calculate analytical radiation pressure that effect other particles
+	-add pseudo drag or pressure forces for fun??
+
+11. Tree code + fast multipole method:
+	- http://www.cs.hut.fi/~ctl/NBody.pdf
+
+
+12.
+make test bed thats easy to use for future development
+	-https://en.wikipedia.org/wiki/N-body_choreography
+
+13. 
+include particle radius as input in case we want to do collisions or contact forces in the future
+	-could default it to zero if not specified
+	
+To Do for sure:
+
+-flags for command line args
+-dont print out integration step to command line
+	-maybe write progress report to output file
+-make sure to write out final time step before exiting
+-fix output file naming 
+	-with big N, the .txt file extension gets cut off, so you will get nbodyout_999990.tx or someting. 
+	-need have enough leading zeros (could just choose a large number of spaces, or base it off of desired number of steps)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
